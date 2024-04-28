@@ -627,8 +627,9 @@ bool is_wav_buffer(const std::string buf) {
         return false;
     }
 
+    // ffmpeg sets chunk size to -1 when streaming wav files to a pipe
     uint32_t chunk_size = *reinterpret_cast<const uint32_t*>(buf.data() + 4);
-    if (chunk_size + 8 != buf.size()) {
+    if (chunk_size != (uint32_t)-1 && chunk_size + 8 != buf.size()) {
         return false;
     }
 
